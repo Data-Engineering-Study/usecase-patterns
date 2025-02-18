@@ -9,6 +9,9 @@ group = "com.declub"
 version = "1.0-SNAPSHOT"
 
 allprojects {
+    repositories {
+        mavenCentral()
+    }
     plugins.apply("com.diffplug.spotless")
     spotless {
         java {
@@ -34,14 +37,19 @@ allprojects {
 }
 
 subprojects {
+    plugins.apply {
+        apply("java")
+        apply("com.github.johnrengelman.shadow")
+    }
+
     dependencies {
         // logger
         implementation("org.slf4j:slf4j-jdk14:1.7.32")
         implementation("ch.qos.logback:logback-classic:1.4.12")
 
         // flink 프로젝트인 경우 flink 의존성
-        when {
-            project.name.endsWith(":flink") -> {
+        when (project.name) {
+            "flink" -> {
                 // flink 버전 명시
                 val flinkVersion = "1.19.1"
                 println("Implementation flink dependencies...")
@@ -51,8 +59,7 @@ subprojects {
                 implementation("org.apache.flink:flink-runtime-web:$flinkVersion")
                 implementation("org.apache.flink:flink-avro:$flinkVersion")
             }
-
-            project.name.endsWith(":beam") -> {
+            "beam" -> {
                 val beamVersion = "2.62.0"
                 println("Implementation beam dependencies...")
                 // beam bom
@@ -75,10 +82,6 @@ subprojects {
         testImplementation(platform("org.junit:junit-bom:5.10.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 tasks.test {
