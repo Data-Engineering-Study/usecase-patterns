@@ -8,6 +8,11 @@ plugins {
 group = "com.declub"
 version = "1.0-SNAPSHOT"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 allprojects {
     repositories {
         mavenCentral()
@@ -19,10 +24,6 @@ allprojects {
             cleanthat()
             removeUnusedImports()
             googleJavaFormat()
-        }
-        kotlin {
-            ktfmt()
-            ktlint()
         }
         kotlinGradle {
             target("*.gradle.kts")
@@ -59,7 +60,9 @@ subprojects {
                 implementation("org.apache.flink:flink-runtime-web:$flinkVersion")
                 implementation("org.apache.flink:flink-avro:$flinkVersion")
             }
+
             "beam" -> {
+                // beam 버전 명시
                 val beamVersion = "2.62.0"
                 println("Implementation beam dependencies...")
                 // beam bom
