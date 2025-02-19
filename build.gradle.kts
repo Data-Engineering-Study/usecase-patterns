@@ -44,10 +44,12 @@ subprojects {
     }
 
     dependencies {
+        // data faker
+        implementation("net.datafaker:datafaker:2.4.2")
+
         // logger
         implementation("org.slf4j:slf4j-jdk14:1.7.32")
         implementation("ch.qos.logback:logback-classic:1.4.12")
-
         // flink 프로젝트인 경우 flink 의존성
         when (project.name) {
             "flink" -> {
@@ -59,6 +61,9 @@ subprojects {
                 implementation("org.apache.flink:flink-clients:$flinkVersion")
                 implementation("org.apache.flink:flink-runtime-web:$flinkVersion")
                 implementation("org.apache.flink:flink-avro:$flinkVersion")
+                if (project.parent?.name != "common") {
+                    implementation(project(":common:flink"))
+                }
             }
 
             "beam" -> {
@@ -77,6 +82,14 @@ subprojects {
                     "beam-runners-google-cloud-dataflow-java",
                     "beam-runners-flink-1.18",
                 )
+
+                // auto value
+                compileOnly("com.google.auto.value:auto-value-annotations")
+                annotationProcessor("com.google.auto.value:auto-value:1.10.4")
+
+                if (project.parent?.name != "common") {
+                    implementation(project(":common:beam"))
+                }
             }
         }
     }

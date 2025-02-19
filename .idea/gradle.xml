@@ -8,6 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/beam" />
+            <option value="$PROJECT_DIR$/common/flink" />
             <option value="$PROJECT_DIR$/multiple-storage-location" />
             <option value="$PROJECT_DIR$/multiple-storage-location/beam" />
             <option value="$PROJECT_DIR$/multiple-storage-location/flink" />
